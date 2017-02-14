@@ -1,0 +1,31 @@
+nginx:
+    build: ./nginx/
+    ports:
+        - 80:80
+    links:
+        - php
+    volumes:
+        - ~/projects/personal/corporecard:/var/www/html
+
+php:
+    image: php:5.6-fpm
+    expose:
+        - 9000
+    volumes:
+        - ~/www/html:/var/www/html
+
+mysql:
+    image: mysql:latest
+    volumes_from:
+        - data
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: corporecard
+        MYSQL_USER: corporecard
+        MYSQL_PASSWORD: corporecard
+
+data:
+    image: mysql:latest
+    volumes:
+        - /var/lib/mysql
+    command: "true"
